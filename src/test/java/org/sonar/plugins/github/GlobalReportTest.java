@@ -218,7 +218,7 @@ public class GlobalReportTest {
 
   @Test
   public void shouldFormatIssuesForMarkdownWhenInlineCommentsDisabledAndLimitReached() {
-    GlobalReport globalReport = new GlobalReport(new MarkDownUtils(settings), false, 4);
+    GlobalReport globalReport = new GlobalReport(new MarkDownUtils(settings), false, 4, "SonarQube");
     globalReport.process(newMockedIssue("component", null, null, Severity.INFO, true, "Issue 0", "rule0"), GITHUB_URL, false);
     globalReport.process(newMockedIssue("component", null, null, Severity.MINOR, true, "Issue 1", "rule1"), GITHUB_URL, false);
     globalReport.process(newMockedIssue("component", null, null, Severity.MAJOR, true, "Issue 2", "rule2"), GITHUB_URL, false);

@@ -61,7 +61,7 @@ public class PullRequestIssuePostJob implements PostJob {
 
   @Override
   public void execute(PostJobContext context) {
-    GlobalReport report = new GlobalReport(markDownUtils, gitHubPluginConfiguration.tryReportIssuesInline());
+    GlobalReport report = new GlobalReport(markDownUtils, gitHubPluginConfiguration.tryReportIssuesInline(), gitHubPluginConfiguration.contextName());
     try {
       Map<InputFile, Map<Integer, StringBuilder>> commentsToBeAddedByLine = processIssues(report, context.issues());
 
@@ -74,7 +74,7 @@ public class PullRequestIssuePostJob implements PostJob {
       pullRequestFacade.createOrUpdateSonarQubeStatus(report.getStatus(), report.getStatusDescription());
     } catch (Exception e) {
       LOG.error("SonarQube analysis failed to complete the review of this pull request", e);
-      pullRequestFacade.createOrUpdateSonarQubeStatus(GHCommitState.ERROR, StringUtils.abbreviate("SonarQube analysis failed: " + e.getMessage(), 140));
+      pullRequestFacade.createOrUpdateSonarQubeStatus(GHCommitState.ERROR, StringUtils.abbreviate(gitHubPluginConfiguration.contextName() + " analysis failed: " + e.getMessage(), 140));
     }
   }
 

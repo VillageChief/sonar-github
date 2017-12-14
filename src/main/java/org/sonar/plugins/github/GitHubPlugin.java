@@ -53,6 +53,20 @@ import org.sonar.api.PropertyType;
     global = false,
     type = PropertyType.INTEGER),
   @Property(
+    key = GitHubPlugin.GITHUB_CONTEXT_KEY,
+    defaultValue = "sonarqube",
+    name = "GitHub Context",
+    description = "The context used for the github Pull Request",
+    global = true,
+    type = PropertyType.STRING),
+  @Property(
+    key = GitHubPlugin.GITHUB_CONTEXT_NAME,
+    name = "GitHub Context Name",
+    defaultValue = "SonarQube",
+    description = "The name used for the github Pull Request descriptions",
+    global = true,
+    type = PropertyType.STRING),
+  @Property(
     key = GitHubPlugin.GITHUB_DISABLE_INLINE_COMMENTS,
     defaultValue = "false",
     name = "Disable issue reporting as inline comments",
@@ -63,6 +77,8 @@ import org.sonar.api.PropertyType;
 })
 public class GitHubPlugin implements Plugin {
 
+  public static final String GITHUB_CONTEXT_KEY = "sonar.github.context.key";
+  public static final String GITHUB_CONTEXT_NAME = "sonar.github.context.name";
   public static final String GITHUB_ENDPOINT = "sonar.github.endpoint";
   public static final String GITHUB_OAUTH = "sonar.github.oauth";
   public static final String GITHUB_REPO = "sonar.github.repository";

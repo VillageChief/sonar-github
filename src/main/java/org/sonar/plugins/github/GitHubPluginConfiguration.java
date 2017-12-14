@@ -132,6 +132,14 @@ public class GitHubPluginConfiguration {
     return settings.getString(GitHubPlugin.GITHUB_ENDPOINT);
   }
 
+  public String contextKey() {
+    return settings.getString(GitHubPlugin.GITHUB_CONTEXT_KEY);
+  }
+
+  public String contextName() {
+    return settings.getString(GitHubPlugin.GITHUB_CONTEXT_NAME);
+  }
+
   public boolean tryReportIssuesInline() {
     return !settings.getBoolean(GitHubPlugin.GITHUB_DISABLE_INLINE_COMMENTS);
   }

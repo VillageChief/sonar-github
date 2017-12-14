@@ -111,6 +111,14 @@ public class GitHubPluginConfigurationTest {
     settings.setProperty(GitHubPlugin.GITHUB_ENDPOINT, "http://myprivate-endpoint");
     assertThat(config.endpoint()).isEqualTo("http://myprivate-endpoint");
 
+    assertThat(config.contextKey()).isEqualTo("sonarqube");
+    settings.setProperty(GitHubPlugin.GITHUB_CONTEXT_KEY, "my_context");
+    assertThat(config.contextKey()).isEqualTo("my_context");
+
+    assertThat(config.contextName()).isEqualTo("SonarQube");
+    settings.setProperty(GitHubPlugin.GITHUB_CONTEXT_NAME, "My Name");
+    assertThat(config.contextName()).isEqualTo("My Name");
+
     assertThat(config.tryReportIssuesInline()).isTrue();
     settings.setProperty(GitHubPlugin.GITHUB_DISABLE_INLINE_COMMENTS, "true");
     assertThat(config.tryReportIssuesInline()).isFalse();

@@ -32,15 +32,24 @@ public class GlobalReport {
   private int extraIssueCount = 0;
   private int maxGlobalReportedIssues;
   private final ReportBuilder builder;
+  private final String contextName;
 
   public GlobalReport(MarkDownUtils markDownUtils, boolean tryReportIssuesInline) {
-    this(markDownUtils, tryReportIssuesInline, GitHubPluginConfiguration.MAX_GLOBAL_ISSUES);
+    this(markDownUtils, tryReportIssuesInline, GitHubPluginConfiguration.MAX_GLOBAL_ISSUES, "SonarQube");
   }
 
-  public GlobalReport(MarkDownUtils markDownUtils, boolean tryReportIssuesInline, int maxGlobalReportedIssues) {
+  public GlobalReport(MarkDownUtils markDownUtils, boolean tryReportIssuesInline, String contextName) {
+    this(markDownUtils, tryReportIssuesInline, GitHubPluginConfiguration.MAX_GLOBAL_ISSUES, contextName);
+  }
+
+  public GlobalReport(MarkDownUtils markDownUtils, boolean tryReportIssuesInline, int maxGlobalReportedIssues, String contextName) {
     this.tryReportIssuesInline = tryReportIssuesInline;
     this.maxGlobalReportedIssues = maxGlobalReportedIssues;
     this.builder = new MarkDownReportBuilder(markDownUtils);
+    this.contextName = contextName;
+    if ( contextName == null ) {
+    	throw new IllegalArgumentException("contextName must not be null");
+    }
   }
 
   private void increment(Severity severity) {
@@ -50,7 +59,7 @@ public class GlobalReport {
   public String formatForMarkdown() {
     int newIssues = newIssues(Severity.BLOCKER) + newIssues(Severity.CRITICAL) + newIssues(Severity.MAJOR) + newIssues(Severity.MINOR) + newIssues(Severity.INFO);
     if (newIssues == 0) {
-      return "SonarQube analysis reported no issues.";
+      return contextName + " analysis reported no issues.";
     }
 
     boolean hasInlineIssues = newIssues > extraIssueCount;

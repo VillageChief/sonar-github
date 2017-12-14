@@ -63,8 +63,6 @@ public class PullRequestFacade {
 
   private static final Logger LOG = Loggers.get(PullRequestFacade.class);
 
-  static final String COMMIT_CONTEXT = "sonarqube";
-
   private final GitHubPluginConfiguration config;
   private Map<String, Map<Integer, Integer>> patchPositionMappingByFile;
   private Map<String, Map<Integer, GHPullRequestReviewComment>> existingReviewCommentsByLocationByFile = new HashMap<>();
@@ -275,11 +273,11 @@ public class PullRequestFacade {
     try {
       // Copy previous targetUrl in case it was set by an external system (like the CI job).
       String targetUrl = null;
-      GHCommitStatus lastStatus = getCommitStatusForContext(pr, COMMIT_CONTEXT);
+      GHCommitStatus lastStatus = getCommitStatusForContext(pr, config.contextKey());
       if (lastStatus != null) {
         targetUrl = lastStatus.getTargetUrl();
       }
-      ghRepo.createCommitStatus(pr.getHead().getSha(), status, targetUrl, statusDescription, COMMIT_CONTEXT);
+      ghRepo.createCommitStatus(pr.getHead().getSha(), status, targetUrl, statusDescription, config.contextKey());
     } catch (FileNotFoundException e) {
       String msg = "Unable to set pull request status. GitHub account probably miss push permission on the repository.";
       if (LOG.isDebugEnabled()) {

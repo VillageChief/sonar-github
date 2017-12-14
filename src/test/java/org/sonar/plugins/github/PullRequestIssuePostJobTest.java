@@ -64,6 +64,7 @@ public class PullRequestIssuePostJobTest {
       .category(CoreProperties.CATEGORY_GENERAL)
       .defaultValue(CoreProperties.SERVER_BASE_URL_DEFAULT_VALUE)
       .build()));
+    settings.setProperty(GitHubPlugin.GITHUB_CONTEXT_NAME, "SonarQube");
     GitHubPluginConfiguration config = new GitHubPluginConfiguration(settings, new System2());
     context = mock(PostJobContext.class);
 
