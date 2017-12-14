@@ -22,9 +22,11 @@ package org.sonar.plugins.github;
 import java.net.URL;
 import java.util.Locale;
 import javax.annotation.Nullable;
+
 import org.kohsuke.github.GHCommitState;
 import org.sonar.api.batch.postjob.issue.PostJobIssue;
 import org.sonar.api.batch.rule.Severity;
+import org.sonar.api.internal.google.common.annotations.VisibleForTesting;
 
 public class GlobalReport {
   private final boolean tryReportIssuesInline;
@@ -34,6 +36,7 @@ public class GlobalReport {
   private final ReportBuilder builder;
   private final String contextName;
 
+  @VisibleForTesting
   public GlobalReport(MarkDownUtils markDownUtils, boolean tryReportIssuesInline) {
     this(markDownUtils, tryReportIssuesInline, GitHubPluginConfiguration.MAX_GLOBAL_ISSUES, "SonarQube");
   }
@@ -64,7 +67,7 @@ public class GlobalReport {
 
     boolean hasInlineIssues = newIssues > extraIssueCount;
     boolean extraIssuesTruncated = extraIssueCount > maxGlobalReportedIssues;
-    builder.append("SonarQube analysis reported ").append(newIssues).append(" issue").append(newIssues > 1 ? "s" : "").append("\n");
+    builder.append(contextName + " analysis reported ").append(newIssues).append(" issue").append(newIssues > 1 ? "s" : "").append("\n");
     if (hasInlineIssues || extraIssuesTruncated) {
       appendSummaryBySeverity(builder);
     }
@@ -124,7 +127,7 @@ public class GlobalReport {
   }
 
   private void appendNewIssuesInline(StringBuilder sb) {
-    sb.append("SonarQube reported ");
+    sb.append(contextName + " reported ");
     int newIssues = newIssues(Severity.BLOCKER) + newIssues(Severity.CRITICAL) + newIssues(Severity.MAJOR) + newIssues(Severity.MINOR) + newIssues(Severity.INFO);
     if (newIssues > 0) {
       sb.append(newIssues).append(" issue" + (newIssues > 1 ? "s" : "")).append(",");
